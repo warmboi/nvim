@@ -28,7 +28,8 @@ let g:airline_theme='onedark'
 let g:ctrlp_custom_ignore = { 'dir': 'node_modules$\|dist$' }
 let g:ale_fixers ={'javascript': ['prettier', 'eslint'], 'typescript': ['prettier', 'eslint'] }
 let g:ale_linters_explicit = 1
-let g:ale_fix_on_save=1
+let g:ale_fix_on_save = 1
+let g:fugitive_dynamic_colors = 0
 
 vnoremap d "_d
 nnoremap dd "_dd
