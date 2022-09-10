@@ -55,6 +55,12 @@ inoremap <C-j> <Down>
 inoremap <C-h> <Left>
 inoremap <C-k> <Up>
 inoremap <C-l> <Right>
+nnoremap yy "+yy
+nnoremap p "+p
+nnoremap x "+x
+vnoremap y "+y
+vnoremap p "+p
+vnoremap x "+x
 
 function! ShowDocumentation()
   if CocAction('hasProvider', 'hover')
@@ -78,7 +84,6 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'romgrk/barbar.nvim'
   Plug 'mfussenegger/nvim-dap'
   Plug 'rcarriga/nvim-dap-ui'
-  Plug 'mxsdev/nvim-dap-vscode-js'
 call plug#end()
 
 lua << EOF
@@ -87,13 +92,6 @@ require('modules.nvim-tree')
 require('modules.onedark')
 require('modules.dap')
 EOF
-
-nnoremap yy "+yy
-nnoremap p "+p
-nnoremap x "+x
-vnoremap y "+y
-vnoremap p "+p
-vnoremap x "+x
 
 EOM
 
@@ -105,6 +103,7 @@ read -p "WSL ? (Y/N): " IS_WSL
 if [ $IS_WSL == "Y" ]; then
 read -r -d '' INIT_VIM << EOM
   let g:clipboard = { 'name': 'WslClipboard', 'copy': { '+': 'clip.exe' }, 'paste': { '+': 'powershell.exe -c [Console]::Out.Write(\$(Get-Clipboard -Raw).tostring().replace("\`r", ""))' }, 'cache_enabled': 0  }
+
 EOM
 echo "$INIT_VIM" >> init.vim
 fi
