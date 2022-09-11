@@ -25,9 +25,9 @@ set mouse+=a
 set updatetime=250
 set backspace=indent,eol,start
 set laststatus=2 " turn on bottom bar
+set nowrap
 
 let g:airline_theme='onedark'
-
 let g:ctrlp_custom_ignore = { 'dir': 'node_modules$\|dist$' }
 let g:ale_fixers ={'javascript': ['prettier', 'eslint'], 'typescript': ['prettier', 'eslint'] }
 let g:ale_linters_explicit = 1
@@ -74,7 +74,6 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'dense-analysis/ale'
-  Plug 'kyazdani42/nvim-tree.lua'
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'navarasu/onedark.nvim'
   Plug 'tpope/vim-fugitive'
@@ -84,11 +83,14 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'romgrk/barbar.nvim'
   Plug 'mfussenegger/nvim-dap'
   Plug 'rcarriga/nvim-dap-ui'
+  Plug 'nvim-neo-tree/neo-tree.nvim'
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'MunifTanjim/nui.nvim'
 call plug#end()
 
 lua << EOF
 require('modules.barbar')
-require('modules.nvim-tree')
+require('modules.neo-tree')
 require('modules.onedark')
 require('modules.dap')
 EOF
@@ -98,7 +100,7 @@ EOM
 rm -rf init.vim
 echo "$INIT_VIM" >> init.vim
 
-read -p "WSL ? (Y/N): " IS_WSL
+read -p "is WSL ? (Y/N): " IS_WSL
 
 if [ $IS_WSL == "Y" ]; then
 read -r -d '' INIT_VIM << EOM
@@ -108,8 +110,25 @@ EOM
 echo "$INIT_VIM" >> init.vim
 fi
 
-rm -rf external
-git clone https://github.com/Microsoft/vscode-node-debug2.git external/node_debug
-cd external/node_debug
-npm install && npm run build --no-experimental-fetch && cd ../..
+read -p "install vim-plug ? (Y/N): " IS_INSTALL_VIM_PLUG
+if [ $IS_INSTALL_VIM_PLUG == "Y" ]; then
+  sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+fi
 
+read -p "install plugins ? (Y/N): " IS_INSTALL_VIM_PLUGINS
+if [ $IS_INSTALL_VIM_PLUGINS == "Y" ]; then
+  nvim -c PlugInstall -c q! -c q! .
+fi
+
+read -p "install node_debug ? (Y/N): " IS_INSTALL_NODE_DEBUG
+if [ $IS_INSTALL_NODE_DEBUG == "Y" ]; then
+  rm -rf external/node_debug
+  git clone https://github.com/Microsoft/vscode-node-debug2.git external/node_debug
+  cd external/node_debug
+  npm install && npm run build --no-experimental-fetch && cd ../..
+fi
+
+read -p "install coc-tsserver ? (Y/N): " IS_INSTALL_COC_TSSERVER
+if [ $IS_INSTALL_COC_TSSERVER == "Y" ]; then
+  nvim -c CocInstall coc-tsserver -c q! .
+fi
