@@ -1,4 +1,7 @@
 require('neo-tree').setup {
+  window = {
+	position = "left"
+  },
   filesystem = {
 	filtered_items = {
 	  hide_dotfiles = false,
