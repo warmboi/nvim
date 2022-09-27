@@ -9,10 +9,13 @@ require('neo-tree').setup {
   },
   filesystem = {
 	filtered_items = {
-	  visible = false,
+	  visible = true,
 	  hide_hidden = true,
 	  hide_gitignored = false,
 	  hide_dotfiles = false,
+	  never_show = {
+		"node_modules"
+	  }
 	}
   }
 }
