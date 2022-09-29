@@ -87,7 +87,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'MunifTanjim/nui.nvim'
   Plug 'anuvyklack/middleclass'
   Plug 'anuvyklack/windows.nvim'
-  Plug 'anuvyklack/animationnvim'
+  Plug 'anuvyklack/animation.nvim'
 call plug#end()
 
 lua << EOF
@@ -103,6 +103,7 @@ EOM
 rm -rf init.vim
 echo "$INIT_VIM" >> init.vim
 
+read -p "is WIN ? (Y/N): " IS_WIN
 read -p "is WSL ? (Y/N): " IS_WSL
 
 if [ $IS_WSL == "Y" ]; then
@@ -115,7 +116,18 @@ fi
 
 read -p "install vim-plug ? (Y/N): " IS_INSTALL_VIM_PLUG
 if [ $IS_INSTALL_VIM_PLUG == "Y" ]; then
-  sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  if [ $IS_WIN == "Y" ]; then
+	md ~/vimfiles/autoload
+	$uri = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+	(New-Object Net.WebClient).DownloadFile(
+	  $uri,
+	  $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath(
+		"~/vimfiles/autoload/plug.vim"
+	  )
+	)
+  else
+	sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  fi
 fi
 
 read -p "install plugins ? (Y/N): " IS_INSTALL_VIM_PLUGINS
@@ -134,4 +146,12 @@ fi
 read -p "install coc-tsserver ? (Y/N): " IS_INSTALL_COC_TSSERVER
 if [ $IS_INSTALL_COC_TSSERVER == "Y" ]; then
   nvim -c CocInstall coc-tsserver -c q! .
+fi
+read -p "install coc-prettier ? (Y/N): " IS_INSTALL_COC_TSSERVER
+if [ $IS_INSTALL_COC_TSSERVER == "Y" ]; then
+  nvim -c CocInstall coc-prettier -c q! .
+fi
+read -p "install coc-eslint ? (Y/N): " IS_INSTALL_COC_TSSERVER
+if [ $IS_INSTALL_COC_TSSERVER == "Y" ]; then
+  nvim -c CocInstall coc-eslint -c q! .
 fi
