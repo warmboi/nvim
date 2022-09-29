@@ -85,6 +85,9 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'nvim-neo-tree/neo-tree.nvim'
   Plug 'nvim-lua/plenary.nvim'
   Plug 'MunifTanjim/nui.nvim'
+  Plug 'anuvyklack/middleclass'
+  Plug 'anuvyklack/windows.nvim'
+  Plug 'anuvyklack/animationnvim'
 call plug#end()
 
 lua << EOF
@@ -92,6 +95,7 @@ require('modules.barbar')
 require('modules.neo-tree')
 require('modules.onedark')
 require('modules.dap')
+require('modules.windows')
 EOF
 
 EOM
