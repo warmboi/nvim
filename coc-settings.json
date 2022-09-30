@@ -1,3 +1,7 @@
 {
-  "diagnostic.refreshOnInsertMode": true
+  "diagnostic.refreshOnInsertMode": true,
+  "eslint.enable": true,
+  "eslint.fixOnSaveTimeout": 1000,
+  "eslint.run": "onType",
+  "eslint.autoFixOnSave": true
 }
