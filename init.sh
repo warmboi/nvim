@@ -72,7 +72,6 @@ endfunction
 call plug#begin('~/.config/nvim/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  Plug 'dense-analysis/ale'
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'navarasu/onedark.nvim'
   Plug 'tpope/vim-fugitive'
@@ -117,14 +116,8 @@ fi
 read -p "install vim-plug ? (Y/N): " IS_INSTALL_VIM_PLUG
 if [ $IS_INSTALL_VIM_PLUG == "Y" ]; then
   if [ $IS_WIN == "Y" ]; then
-	md ~/vimfiles/autoload
-	$uri = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-	(New-Object Net.WebClient).DownloadFile(
-	  $uri,
-	  $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath(
-		"~/vimfiles/autoload/plug.vim"
-	  )
-	)
+	iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |
+    ni "$(@($env:XDG_DATA_HOME, $env:LOCALAPPDATA)[$null -eq $env:XDG_DATA_HOME])/nvim-data/site/autoload/plug.vim" -Force	
   else
 	sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   fi
@@ -138,7 +131,7 @@ fi
 read -p "install node_debug ? (Y/N): " IS_INSTALL_NODE_DEBUG
 if [ $IS_INSTALL_NODE_DEBUG == "Y" ]; then
   rm -rf external/node_debug
-  git clone https://github.com/Microsoft/vscode-node-debug2.git external/node_debug
+  git clone https://github.com/Microsoft/vscode-node-debug2.git ~/.config/nvim/external/node_debug
   cd external/node_debug
   npm install && npm run build --no-experimental-fetch && cd ../..
 fi
