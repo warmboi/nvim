@@ -37,29 +37,6 @@ vnoremap d "_d
 nnoremap dd "_dd
 nnoremap D "_D
 
-nnoremap <silent> K :call ShowDocumentation()<CR>
-function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-inoremap <silent><expr> <Tab>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-
-
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gr <Plug>(coc-references)
-nmap <silent> gc <Plug>(coc-codeaction)
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Symbol renaming.
-nmap <silent> <F2> <Plug>(coc-rename)
-
-inoremap <silent><expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 inoremap <C-j> <Down>
 inoremap <C-h> <Left>
 inoremap <C-k> <Up>
@@ -79,9 +56,35 @@ function! ShowDocumentation()
   endif
 endfunction
 
+nnoremap <silent> K :call ShowDocumentation()<CR>
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gc <Plug>(coc-codeaction)
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <silent> <F2> <Plug>(coc-rename)
+
+inoremap <silent><expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+
 call plug#begin('~/.config/nvim/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'neoclide/coc-tsserver'
+  Plug 'neoclide/coc-prettier'
+  Plug 'neoclide/coc-eslint'
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'navarasu/onedark.nvim'
   Plug 'tpope/vim-fugitive'
@@ -109,52 +112,33 @@ EOF
 
 EOM
 
-rm -rf init.vim
-echo "$INIT_VIM" >> init.vim
+rm -rf ./init.vim
+echo "$INIT_VIM" >> ./init.vim
 
-read -p "is WIN ? (Y/N): " IS_WIN
-read -p "is WSL ? (Y/N): " IS_WSL
+read -p "install NeoVim ? (Y/N): " IS_INSTALL_NVIM
 
-if [ $IS_WSL == "Y" ]; then
-read -r -d '' INIT_VIM << EOM
-  let g:clipboard = { 'name': 'WslClipboard', 'copy': { '+': 'clip.exe' }, 'paste': { '+': 'powershell.exe -c [Console]::Out.Write(\$(Get-Clipboard -Raw).tostring().replace("\`r", ""))' }, 'cache_enabled': 0  }
-
-EOM
-echo "$INIT_VIM" >> init.vim
+if [ $IS_INSTALL_NVIM == "Y" ]; then
+  winget install Neovim.Neovim
 fi
+
+echo "$INIT_VIM" >> init.vim
 
 read -p "install vim-plug ? (Y/N): " IS_INSTALL_VIM_PLUG
 if [ $IS_INSTALL_VIM_PLUG == "Y" ]; then
-  if [ $IS_WIN == "Y" ]; then
-	iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |
-    ni "$(@($env:XDG_DATA_HOME, $env:LOCALAPPDATA)[$null -eq $env:XDG_DATA_HOME])/nvim-data/site/autoload/plug.vim" -Force	
-  else
-	sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  fi
+curl -fLo ~/AppData/Local/nvim-data/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
 read -p "install plugins ? (Y/N): " IS_INSTALL_VIM_PLUGINS
 if [ $IS_INSTALL_VIM_PLUGINS == "Y" ]; then
-  nvim -c PlugInstall -c q! -c q! .
+  nvim ./iniv.vim -Es PlugInstall -Es q! -Es q!
 fi
 
 read -p "install node_debug ? (Y/N): " IS_INSTALL_NODE_DEBUG
 if [ $IS_INSTALL_NODE_DEBUG == "Y" ]; then
-  rm -rf external/node_debug
+  rm -rf ~/.config/nvim/external/node_debug
   git clone https://github.com/Microsoft/vscode-node-debug2.git ~/.config/nvim/external/node_debug
-  cd external/node_debug
-  npm install && npm run build --no-experimental-fetch && cd ../..
+  cd ~/.config/nvim/external/node_debug
+  npm install && npm run build --no-experimental-fetch && cd ~/AppData/Local/nvim
 fi
 
-read -p "install coc-tsserver ? (Y/N): " IS_INSTALL_COC_TSSERVER
-if [ $IS_INSTALL_COC_TSSERVER == "Y" ]; then
-  nvim -c CocInstall coc-tsserver -c q! .
-fi
-read -p "install coc-prettier ? (Y/N): " IS_INSTALL_COC_TSSERVER
-if [ $IS_INSTALL_COC_TSSERVER == "Y" ]; then
-  nvim -c CocInstall coc-prettier -c q! .
-fi
-read -p "install coc-eslint ? (Y/N): " IS_INSTALL_COC_TSSERVER
-if [ $IS_INSTALL_COC_TSSERVER == "Y" ]; then
-  nvim -c CocInstall coc-eslint -c q! .
-fi
