@@ -25,6 +25,7 @@ set mouse+=a
 set updatetime=250
 set backspace=indent,eol,start
 set laststatus=2 " turn on bottom bar
+set noswapfile
 
 let g:airline_theme='onedark'
 let g:ctrlp_custom_ignore = { 'dir': 'node_modules$\|dist$' }

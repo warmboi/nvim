@@ -12,7 +12,7 @@ dap.set_log_level("DEBUG");
 dap.adapters.node2 = {
   type = 'executable',
   command = 'node',
-  args = {'~/.config/nvim/external/node_debug/out/src/nodeDebug.js'},
+  args = {os.getenv("HOME") .. '/.config/nvim/external/node_debug/out/src/nodeDebug.js'},
 }
 
 dap.configurations.typescript = {
