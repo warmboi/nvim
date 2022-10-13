@@ -37,7 +37,6 @@ let g:fugitive_dynamic_colors = 0
 vnoremap d "_d
 nnoremap dd "_dd
 nnoremap D "_D
-nmap <silent> gd <Plug>(coc-definition)
 
 nnoremap <silent> K :call ShowDocumentation()<CR>
 function! CheckBackspace() abort
@@ -49,6 +48,17 @@ inoremap <silent><expr> <Tab>
       \ coc#pum#visible() ? coc#pum#next(1) :
       \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
+
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gc <Plug>(coc-codeaction)
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <silent> <F2> <Plug>(coc-rename)
 
 inoremap <silent><expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 inoremap <C-j> <Down>
