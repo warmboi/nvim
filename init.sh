@@ -113,25 +113,9 @@ EOM
 rm -rf init.vim
 echo "$INIT_VIM" >> init.vim
 
-read -p "is WIN ? (Y/N): " IS_WIN
-read -p "is WSL ? (Y/N): " IS_WSL
-
-if [ $IS_WSL == "Y" ]; then
-read -r -d '' INIT_VIM << EOM
-  let g:clipboard = { 'name': 'WslClipboard', 'copy': { '+': 'clip.exe' }, 'paste': { '+': 'powershell.exe -c [Console]::Out.Write(\$(Get-Clipboard -Raw).tostring().replace("\`r", ""))' }, 'cache_enabled': 0  }
-
-EOM
-echo "$INIT_VIM" >> init.vim
-fi
-
 read -p "install vim-plug ? (Y/N): " IS_INSTALL_VIM_PLUG
 if [ $IS_INSTALL_VIM_PLUG == "Y" ]; then
-  if [ $IS_WIN == "Y" ]; then
-	iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |
-    ni "$(@($env:XDG_DATA_HOME, $env:LOCALAPPDATA)[$null -eq $env:XDG_DATA_HOME])/nvim-data/site/autoload/plug.vim" -Force	
-  else
-	sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  fi
+  sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 fi
 
 read -p "install plugins ? (Y/N): " IS_INSTALL_VIM_PLUGINS
