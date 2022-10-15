@@ -8,11 +8,8 @@ endif
 set hlsearch                    " 검색어 하이라이팅
 set nu                          " 줄번
 set autoindent                  " 자동 들여쓰기
-set ts=4                        " tag select
-set sts=4                       " st select
 set cindent                     " C언어 자동 들여쓰기
 set laststatus=2                " 상태바 표시 항상
-set shiftwidth=2                " 자동 들여쓰기 너비 설정
 set showmatch                   " 일치하는 괄호 하이라이팅
 set smartcase                   " 검색시 대소문자 구별
 set smarttab
@@ -25,6 +22,9 @@ set mouse+=a
 set updatetime=250
 set backspace=indent,eol,start
 set laststatus=2 " turn on bottom bar
+set sw=2
+set ts=2
+set sts=2
 
 let g:airline_theme='onedark'
 let g:ctrlp_custom_ignore = { 'dir': 'node_modules$\|dist$' }
@@ -131,7 +131,8 @@ fi
 
 read -p "install plugins ? (Y/N): " IS_INSTALL_VIM_PLUGINS
 if [ $IS_INSTALL_VIM_PLUGINS == "Y" ]; then
-  nvim ./iniv.vim -Es PlugInstall -Es q! -Es q!
+  nvim ./init.vim -Es PlugInstall -Es q! -Es q!
+  nvim ./init.vim -Es CocInstall coc-tsserver -Es q! CocInstall coc-eslint -Es q! CocInstall coc-prettier -Es q! CocInstall @yaegassy/coc-volar -Es q! -Es q!
 fi
 
 read -p "install node_debug ? (Y/N): " IS_INSTALL_NODE_DEBUG
