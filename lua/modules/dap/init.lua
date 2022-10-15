@@ -12,7 +12,7 @@ dap.set_log_level("DEBUG");
 dap.adapters.node2 = {
   type = 'executable',
   command = 'node',
-  args = {'~/.config/nvim/external/node_debug/out/src/nodeDebug.js'},
+  args = {os.getenv("PROFILE") .. '.config/nvim/external/node_debug/out/src/nodeDebug.js'},
 }
 
 dap.configurations.typescript = {
@@ -32,6 +32,17 @@ dap.configurations.typescript = {
     request = 'attach',
     processId = require'dap.utils'.pick_process,
   },
+  {
+	name = "electron",
+	type = "node2",
+	request = "launch",
+    cwd = vim.fn.getcwd(),
+	runtimeExecutable = "${workspaceFolder}/node_modules/.bin/electron",
+	windows = {
+	  runtimeExecutable = "${workspaceFolder}/node_modules/.bin/electron.cmd"
+	},
+	outputCapture = "std"
+  }
 }
 require("dapui").setup({
   icons = { expanded = "▾", collapsed = "▸" },
