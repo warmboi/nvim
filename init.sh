@@ -4,7 +4,6 @@ read -r -d '' INIT_VIM << EOM
 if has("syntax")
   syntax on
 endif
-
 set hlsearch                    " 검색어 하이라이팅
 set nu                          " 줄번
 set autoindent                  " 자동 들여쓰기
@@ -98,6 +97,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'anuvyklack/middleclass'
   Plug 'anuvyklack/windows.nvim'
   Plug 'anuvyklack/animation.nvim'
+  Plug 'mxsdev/nvim-dap-vscode-js'
 call plug#end()
 
 lua << EOF
@@ -129,6 +129,19 @@ if [ $IS_INSTALL_NODE_DEBUG == "Y" ]; then
   git clone https://github.com/Microsoft/vscode-node-debug2.git ~/.config/nvim/external/node_debug
   cd external/node_debug
   npm install && npm run build --no-experimental-fetch && cd ../..
+
+  rm -rf external/vscode_js_node_debug
+  git clone git clone https://github.com/microsoft/vscode-js-debug ~/.config/nvim/external/vscode_js_node_debug
+  cd external/vscode_js_node_debug
+  npm install --legacy-peer-deps && npm run compile && cd ../..
+fi
+
+read -p "install vscode_node_debug ? (Y/N): " IS_INSTALL_VSCODE_NODE_DEBUG
+if [ $IS_INSTALL_VSCODE_NODE_DEBUG == "Y" ]; then
+  rm -rf external/vscode_js_node_debug
+  git clone git clone https://github.com/microsoft/vscode-js-debug ~/.config/nvim/external/vscode_js_node_debug
+  cd external/vscode_js_node_debug
+  npm install --legacy-peer-deps && npm run compile && cd ../..
 fi
 
 read -p "install coc-tsserver ? (Y/N): " IS_INSTALL_COC_TSSERVER

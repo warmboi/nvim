@@ -9,11 +9,15 @@ require('neo-tree').setup {
   },
   filesystem = {
 	filtered_items = {
-	  visible = true,
+	  visible = false,
 	  hide_hidden = true,
 	  hide_gitignored = false,
 	  hide_dotfiles = false,
-	  never_show = {
+	  never_show_by_pattern = {
+		"node_modules/*",
+		"/dist/"
+	  },
+	  hide_by_name = {
 		"node_modules"
 	  }
 	}

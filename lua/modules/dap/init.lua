@@ -3,9 +3,11 @@ local opts = { noremap = true, silent = true }
 
 -- Move to previous/next
 map('n', '<A-D>', '<Cmd>lua require\'dapui\'.toggle()<CR>', opts)
-map('n', '<A-d>', '<Cmd>lua require\'dap\'.continue()<CR>', opts)
+map('n', '<F5>', '<Cmd>lua require\'dap\'.continue()<CR>', opts)
 map('n', '<A-t>', '<Cmd>lua require\'dap\'.toggle_breakpoint()<CR>', opts)
-map('n', '<A-.>', '<Cmd>BufferNext<CR>', opts)
+map('n', '<F10>', '<Cmd>lua require\'dap\'.step_over()<CR>', opts)
+map('n', '<F11>', '<Cmd>lua require\'dap\'.step_into()<CR>', opts)
+map('n', '<Shift-F11>', '<Cmd>lua require\'dap\'.step_out()<CR>', opts)
 
 local dap = require("dap");
 dap.set_log_level("DEBUG");
@@ -31,8 +33,24 @@ dap.configurations.typescript = {
     type = 'node2',
     request = 'attach',
     processId = require'dap.utils'.pick_process,
+	sourceMaps = true,
   },
+  {
+	type = 'pwa-node',
+	request = 'attach',
+	name = 'vscode-debug-attach',
+	skipFiles = {"<node_internals>/**", "**/node_modules/**"},
+	processId = require'dap.utils'.pick_process,
+	cwd = "${workspaceFolder}"
+  }
 }
+require('dap-vscode-js').setup({
+  adapters = {
+	'pwa-node', 'pwa-chrome'
+  },
+  debugger_path = os.getenv("HOME") .. '/.config/nvim/external/vscode_js_node_debug'
+
+})
 require("dapui").setup({
   icons = { expanded = "▾", collapsed = "▸" },
   mappings = {
@@ -58,21 +76,11 @@ require("dapui").setup({
     {
       elements = {
       -- Elements can be strings or table with id and size keys.
-        { id = "scopes", size = 0.25 },
         "breakpoints",
-        "stacks",
-        "watches",
+        { id = "scopes", size = 0.8 },
       },
       size = 40, -- 40 columns
       position = "left",
-    },
-    {
-      elements = {
-        "repl",
-        "console",
-      },
-      size = 0.25, -- 25% of total lines
-      position = "bottom",
     },
   },
   floating = {
