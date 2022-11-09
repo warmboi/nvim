@@ -156,3 +156,9 @@ read -p "install coc-eslint ? (Y/N): " IS_INSTALL_COC_TSSERVER
 if [ $IS_INSTALL_COC_TSSERVER == "Y" ]; then
   nvim -c CocInstall coc-eslint -c q! .
 fi
+read -p "install coc-eslint ? (Y/N): " IS_INSTALL_COC_TSSERVER
+if [ $IS_INSTALL_COC_TSSERVER == "Y" ]; then
+  nvim -c CocInstall @yaegassy/coc-volar -c q! .
+fi
+
+
