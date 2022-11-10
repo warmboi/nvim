@@ -4,21 +4,32 @@ local opts = { noremap = true, silent = true }
 map('n', '<A-b>', '<Cmd>Neotree toggle<CR>', opts)
 
 require('neo-tree').setup {
+  source_selector = {
+	winbar = false,
+	statusline = false
+  },
   window = {
-	position = "left"
+	position = "left",
+	mappings = {
+	  ["/"] = "noop",
+	  ["f"] = "filter_on_submit"
+	}
   },
   filesystem = {
 	filtered_items = {
 	  visible = false,
-	  hide_hidden = true,
 	  hide_gitignored = false,
 	  hide_dotfiles = false,
-	  never_show_by_pattern = {
-		"node_modules/*",
-		"/dist/"
+	  hide_by_pattern = {
+		"**/node_modules/**",
+		"**/dist/**"
 	  },
-	  hide_by_name = {
-		"node_modules"
+	  find_by_full_path_words = true
+	},
+	window = {
+	  mappings = {
+		["/"] = "noop",
+		["f"] = "filter_on_submit"
 	  }
 	}
   }
