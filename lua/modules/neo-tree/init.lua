@@ -12,7 +12,8 @@ require('neo-tree').setup {
 	position = "left",
 	mappings = {
 	  ["/"] = "noop",
-	  ["f"] = "filter_on_submit"
+	  ["f"] = "filter_on_submit",
+	  ["F"] = "fuzzy_finder_directory_on_submit"
 	}
   },
   filesystem = {
@@ -29,7 +30,8 @@ require('neo-tree').setup {
 	window = {
 	  mappings = {
 		["/"] = "noop",
-		["f"] = "filter_on_submit"
+		["f"] = "filter_on_submit",
+		["F"] = "fuzzy_finder_directory_on_submit"
 	  }
 	}
   }

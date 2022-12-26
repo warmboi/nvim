@@ -84,20 +84,17 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'navarasu/onedark.nvim'
-  Plug 'tpope/vim-fugitive'
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
   Plug 'dyng/ctrlsf.vim'
   Plug 'romgrk/barbar.nvim'
   Plug 'mfussenegger/nvim-dap'
   Plug 'rcarriga/nvim-dap-ui'
-  Plug 'nvim-neo-tree/neo-tree.nvim'
+  Plug 'warmboi/neo-tree.nvim'
   Plug 'nvim-lua/plenary.nvim'
   Plug 'MunifTanjim/nui.nvim'
-  Plug 'anuvyklack/middleclass'
-  Plug 'anuvyklack/windows.nvim'
-  Plug 'anuvyklack/animation.nvim'
   Plug 'mxsdev/nvim-dap-vscode-js'
+  Plug 'lewis6991/gitsigns.nvim'
 call plug#end()
 
 lua << EOF
