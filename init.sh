@@ -5,7 +5,7 @@ if has("syntax")
   syntax on
 endif
 set hlsearch                    " 검색어 하이라이팅
-set nu                          " 줄번
+set nu rnu                         " 줄번
 set autoindent                  " 자동 들여쓰기
 set ts=4                        " tag select
 set sts=4                       " st select
