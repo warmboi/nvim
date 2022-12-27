@@ -3,6 +3,5 @@
   "eslint.enable": true,
   "eslint.fixOnSaveTimeout": 1000,
   "eslint.run": "onType",
-  "eslint.autoFixOnSave": true,
-  "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript", "json", "javascriptreact", "typescriptreact"]
+  "eslint.autoFixOnSave": true
 }

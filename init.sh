@@ -94,7 +94,11 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'nvim-lua/plenary.nvim'
   Plug 'MunifTanjim/nui.nvim'
   Plug 'mxsdev/nvim-dap-vscode-js'
+<<<<<<< Updated upstream
   Plug 'lewis6991/gitsigns.nvim'
+=======
+  Plug 'neovim/nvim-lspconfig'
+>>>>>>> Stashed changes
 call plug#end()
 
 lua << EOF
@@ -103,6 +107,7 @@ require('modules.neo-tree')
 require('modules.onedark')
 require('modules.dap')
 require('modules.windows')
+require('modules.lsp')
 EOF
 
 EOM
